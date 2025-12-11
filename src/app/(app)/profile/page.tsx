@@ -66,7 +66,7 @@ export default function ProfilePage() {
         <Card>
             <CardHeader>
                 <CardTitle className="font-headline text-lg">App Info</CardTitle>
-            </Header>
+            </CardHeader>
             <CardContent>
                 <div className="flex justify-between items-center text-sm">
                     <span className="text-muted-foreground">App Version</span>
