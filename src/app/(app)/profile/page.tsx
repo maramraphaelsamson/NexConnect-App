@@ -5,9 +5,33 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { LogOut, ChevronRight, HelpCircle, MessageSquare, Phone, ShieldQuestion, FileText, Info } from "lucide-react";
+import { useAuth } from "@/firebase";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function ProfilePage() {
-  const { user } = useApp();
+  const { user, isUserLoading } = useApp();
+  const auth = useAuth();
+  const router = useRouter();
+
+    useEffect(() => {
+        if (!isUserLoading && !user) {
+            router.push('/signup');
+        }
+    }, [user, isUserLoading, router]);
+
+    if (isUserLoading || !user) {
+        return null; // Or a loading spinner
+    }
+    
+    const getInitials = (name: string | null | undefined) => {
+        if (!name) return "NN";
+        const names = name.split(' ');
+        if (names.length > 1) {
+          return names[0][0] + names[names.length - 1][0];
+        }
+        return name.substring(0, 2);
+    }
 
   return (
     <div className="p-4 space-y-6">
@@ -15,12 +39,12 @@ export default function ProfilePage() {
             <CardHeader>
                 <div className="flex items-center gap-4">
                     <Avatar className="h-16 w-16 border-2 border-primary">
-                        <AvatarImage src={`https://api.dicebear.com/8.x/initials/svg?seed=${user.name}`} alt={user.name} />
-                        <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                        <AvatarImage src={user.photoURL || `https://api.dicebear.com/8.x/initials/svg?seed=${user.displayName || user.email}`} alt={user.displayName || 'User'} />
+                        <AvatarFallback>{getInitials(user.displayName)}</AvatarFallback>
                     </Avatar>
                     <div>
-                        <CardTitle className="font-headline text-2xl">{user.name}</CardTitle>
-                        <CardDescription>+234 801 234 5678</CardDescription>
+                        <CardTitle className="font-headline text-2xl">{user.displayName || "User"}</CardTitle>
+                        <CardDescription>{user.email}</CardDescription>
                     </div>
                 </div>
             </CardHeader>
@@ -42,20 +66,20 @@ export default function ProfilePage() {
         <Card>
             <CardHeader>
                 <CardTitle className="font-headline text-lg">App Info</CardTitle>
-            </CardHeader>
+            </Header>
             <CardContent>
                 <div className="flex justify-between items-center text-sm">
                     <span className="text-muted-foreground">App Version</span>
                     <span className="font-medium">1.0.0</span>
                 </div>
                  <div className="flex justify-between items-center text-sm mt-2">
-                    <span className="text-muted-foreground">Device ID</span>
-                    <span className="font-medium text-xs">{user.id}</span>
+                    <span className="text-muted-foreground">User ID</span>
+                    <span className="font-medium text-xs">{user.uid}</span>
                 </div>
             </CardContent>
         </Card>
         
-        <Button variant="destructive" className="w-full">
+        <Button variant="destructive" className="w-full" onClick={() => auth.signOut()}>
             <LogOut className="mr-2 h-4 w-4" /> Logout
         </Button>
     </div>

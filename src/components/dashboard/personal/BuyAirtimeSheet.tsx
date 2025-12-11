@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Sheet,
   SheetContent,
@@ -29,8 +29,14 @@ export function BuyAirtimeSheet({ children }: { children: React.ReactNode }) {
   const [selectedNetwork, setSelectedNetwork] = useState<string>("MTN");
   const [amount, setAmount] = useState(100);
   const { user } = useApp();
-  const [recipient, setRecipient] = useState("+2348012345678"); // mock phone from profile
+  const [recipient, setRecipient] = useState(""); 
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (user && user.phoneNumber) {
+        setRecipient(user.phoneNumber);
+    }
+  }, [user]);
 
   const handleBuy = () => {
     // Mock purchase logic

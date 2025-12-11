@@ -1,25 +1,23 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { useUser } from '@/firebase';
+import type { User } from 'firebase/auth';
 
 type Mode = 'Personal' | 'Business';
 
 interface AppContextType {
   mode: Mode;
   toggleMode: () => void;
-  user: { name: string; id: string; };
+  user: User | null;
+  isUserLoading: boolean;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [mode, setMode] = useState<Mode>('Personal');
-
-  // Dummy user data
-  const user = {
-    name: "Tunde",
-    id: "NEX-12345-67"
-  };
+  const { user, isUserLoading } = useUser();
 
   useEffect(() => {
     if (mode === 'Business') {
@@ -34,7 +32,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AppContext.Provider value={{ mode, toggleMode, user }}>
+    <AppContext.Provider value={{ mode, toggleMode, user, isUserLoading }}>
       {children}
     </AppContext.Provider>
   );

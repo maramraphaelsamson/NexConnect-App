@@ -1,11 +1,18 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useAuth, useUser } from "@/firebase";
+import { initiateEmailSignIn, initiateEmailSignUp } from "@/firebase/non-blocking-login";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { useToast } from "@/hooks/use-toast";
+import { Loader2 } from "lucide-react";
 
 const GoogleIcon = () => (
     <svg className="mr-2 h-4 w-4" viewBox="0 0 48 48">
@@ -17,6 +24,49 @@ const GoogleIcon = () => (
   );
 
 export default function SignupPage() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [isLogin, setIsLogin] = useState(false);
+    const auth = useAuth();
+    const { user, isUserLoading } = useUser();
+    const router = useRouter();
+    const { toast } = useToast();
+
+    useEffect(() => {
+        if (user) {
+            router.push('/locker');
+        }
+    }, [user, router]);
+
+    const handleGoogleSignIn = async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+            await signInWithPopup(auth, provider);
+        } catch (error: any) {
+            toast({
+                variant: 'destructive',
+                title: 'Sign-in Failed',
+                description: error.message,
+            });
+        }
+    };
+
+    const handleEmailAuth = () => {
+        if (isLogin) {
+            initiateEmailSignIn(auth, email, password);
+        } else {
+            initiateEmailSignUp(auth, email, password);
+        }
+    };
+
+    if (isUserLoading || user) {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-background to-blue-50">
+                <Loader2 className="h-12 w-12 animate-spin text-primary" />
+            </div>
+        );
+    }
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-background to-blue-50">
       <Card className="w-full max-w-sm mx-4">
@@ -31,16 +81,14 @@ export default function SignupPage() {
                  data-ai-hint="rocket launch"
               />
             </div>
-          <CardTitle className="font-headline text-2xl">Create an Account</CardTitle>
-          <CardDescription>Join NexConnect to get started.</CardDescription>
+          <CardTitle className="font-headline text-2xl">{isLogin ? 'Welcome Back' : 'Create an Account'}</CardTitle>
+          <CardDescription>{isLogin ? 'Log in to continue to NexConnect.' : 'Join NexConnect to get started.'}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Link href="/locker" passHref>
-             <Button variant="outline" className="w-full">
+             <Button variant="outline" className="w-full" onClick={handleGoogleSignIn}>
                 <GoogleIcon />
-                Sign up with Google
+                Sign {isLogin ? 'in' : 'up'} with Google
              </Button>
-          </Link>
           
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
@@ -55,26 +103,24 @@ export default function SignupPage() {
           
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" placeholder="tunde@example.com" />
+            <Input id="email" type="email" placeholder="tunde@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
           
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" />
+            <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
 
-          <Link href="/locker" passHref>
-            <Button className="w-full">Create Account</Button>
-          </Link>
+            <Button className="w-full" onClick={handleEmailAuth}>{isLogin ? 'Log In' : 'Create Account'}</Button>
 
            <p className="text-center text-sm text-muted-foreground">
-              Already have an account?{" "}
-              <Link
-                href="/locker"
+              {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+              <button
+                onClick={() => setIsLogin(!isLogin)}
                 className="underline underline-offset-4 hover:text-primary"
               >
-                Log in
-              </Link>
+                {isLogin ? 'Sign up' : 'Log in'}
+              </button>
             </p>
         </CardContent>
       </Card>

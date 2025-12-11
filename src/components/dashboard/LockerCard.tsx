@@ -1,16 +1,27 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BuyDataSheet } from "@/components/dashboard/personal/BuyDataSheet";
+import { Skeleton } from "@/components/ui/skeleton";
 
-export function LockerCard() {
-  const lockerBalance = 12.50; // Dummy data
+interface LockerCardProps {
+    balance: number | null;
+    isLoading: boolean;
+}
+
+export function LockerCard({ balance, isLoading }: LockerCardProps) {
 
   return (
     <Card className="m-4 bg-gradient-to-br from-blue-500 to-cyan-400 text-primary-foreground shadow-lg">
       <CardHeader>
         <CardDescription className="text-blue-100">Data Locker</CardDescription>
         <CardTitle className="text-5xl font-bold font-headline">
-          {lockerBalance.toFixed(2)} <span className="text-3xl font-body">GB</span>
+          {isLoading ? (
+            <Skeleton className="h-12 w-36 bg-white/30" />
+          ) : (
+            <>
+              {(balance ?? 0).toFixed(2)} <span className="text-3xl font-body">GB</span>
+            </>
+          )}
         </CardTitle>
         <p className="text-sm text-blue-200 pt-1">Non-Expiring Storage</p>
       </CardHeader>
