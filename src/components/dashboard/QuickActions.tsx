@@ -1,3 +1,5 @@
+"use client"
+import * as React from "react";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Smartphone, Phone, Zap, History, Lightbulb } from "lucide-react";
@@ -30,14 +32,18 @@ export function QuickActions() {
 
   return (
     <div className="px-4">
-      <h2 className="text-lg font-bold text-foreground mb-3 px-1 font-headline">Quick Sell (POS)</h2>
+      <h2 className="text-lg font-bold text-foreground mb-3 px-1 font-headline">Quick Actions</h2>
       <div className="grid grid-cols-4 gap-3">
-        {actions.map((action) => (
-           action.component ? action.component :
-          <Link href={action.href || "#"} key={action.label} passHref>
-              <ActionCard icon={action.icon} label={action.label} />
-          </Link>
-        ))}
+        {actions.map((action) => {
+          if (action.component) {
+            return React.cloneElement(action.component, { key: action.label });
+          }
+          return (
+            <Link href={action.href || "#"} key={action.label} passHref>
+                <ActionCard icon={action.icon} label={action.label} />
+            </Link>
+          );
+        })}
       </div>
     </div>
   );
