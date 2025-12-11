@@ -7,7 +7,7 @@ import { WalletCard } from "@/components/dashboard/WalletCard";
 import { QuickActions } from "@/components/dashboard/QuickActions";
 import { BusinessDashboard } from "@/components/dashboard/BusinessDashboard";
 import { useFirestore, useDoc, useMemoFirebase } from "@/firebase";
-import { doc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { setDocumentNonBlocking } from "@/firebase/non-blocking-updates";
@@ -60,26 +60,36 @@ export default function LockerPage() {
 
   // This effect will create initial documents if they don't exist for a new user
     useEffect(() => {
-        if (firestore && user && !isUserProfileLoading && !userProfileData && !userProfileError) {
-             // Create UserProfile
-            const newUserRef = doc(firestore, "users", user.uid);
-            setDocumentNonBlocking(newUserRef, { 
-                id: user.uid,
-                name: user.displayName || "New User",
-                email: user.email,
-                personalMode: true,
-                phoneNumber: user.phoneNumber
-            }, { merge: true });
+        const setupNewUser = async () => {
+            if (firestore && user && !isUserProfileLoading && !userProfileData && !userProfileError) {
+                try {
+                    const userDoc = await getDoc(userRef!);
+                    if (!userDoc.exists()) {
+                        // 1. Create UserProfile first and wait for it to complete
+                        await setDoc(userRef!, { 
+                            id: user.uid,
+                            name: user.displayName || "New User",
+                            email: user.email,
+                            personalMode: true,
+                            phoneNumber: user.phoneNumber
+                        });
+                        
+                        // 2. Now that the user profile exists, create the sub-collection documents
+                        const newLockerRef = doc(firestore, "users", user.uid, "lockers", "main");
+                        setDocumentNonBlocking(newLockerRef, { userId: user.uid, balanceGB: 0 }, { merge: true });
+                        
+                        const newWalletRef = doc(firestore, "users", user.uid, "wallets", "main");
+                        setDocumentNonBlocking(newWalletRef, { userId: user.uid, balanceNaira: 500 }, { merge: true });
+                    }
+                } catch (error) {
+                    console.error("Error setting up new user:", error);
+                    // Handle error appropriately, maybe show a toast to the user
+                }
+            }
+        };
 
-            // Create Locker
-            const newLockerRef = doc(firestore, "users", user.uid, "lockers", "main");
-            setDocumentNonBlocking(newLockerRef, { userId: user.uid, balanceGB: 0 }, { merge: true });
-            
-            // Create Wallet
-            const newWalletRef = doc(firestore, "users", user.uid, "wallets", "main");
-            setDocumentNonBlocking(newWalletRef, { userId: user.uid, balanceNaira: 500 }, { merge: true });
-        }
-    }, [firestore, user, isUserProfileLoading, userProfileData, userProfileError]);
+        setupNewUser();
+    }, [firestore, user, isUserProfileLoading, userProfileData, userProfileError, userRef]);
 
 
   if (isUserLoading || isUserProfileLoading) {
