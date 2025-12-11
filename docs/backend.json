@@ -39,8 +39,7 @@
       },
       "required": [
         "id",
-        "name",
-        "phoneNumber"
+        "name"
       ]
     },
     "Locker": {
@@ -123,6 +122,10 @@
         "status": {
           "type": "string",
           "description": "Status of the transaction (e.g., 'Pending', 'Completed', 'Failed')."
+        },
+        "details": {
+            "type": "string",
+            "description": "A human-readable summary of the transaction."
         }
       },
       "required": [
