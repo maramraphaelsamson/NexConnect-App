@@ -2,9 +2,17 @@
 import * as React from "react";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
-import { Smartphone, Phone, Zap, History, Lightbulb } from "lucide-react";
+import { Smartphone, Phone, Zap, History, Lightbulb, LifeBuoy } from "lucide-react";
 import { BuyDataSheet } from "@/components/dashboard/personal/BuyDataSheet";
 import { BuyAirtimeSheet } from "@/components/dashboard/personal/BuyAirtimeSheet";
+import { cn } from "@/lib/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+
 
 export function QuickActions() {
   const actions = [
@@ -44,19 +52,35 @@ export function QuickActions() {
             </Link>
           );
         })}
+        <TooltipProvider>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <div className="w-full">
+                        <ActionCard icon={LifeBuoy} label="Rescue Me" disabled />
+                    </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>Coming Soon! A feature for loyal customers.</p>
+                </TooltipContent>
+            </Tooltip>
+        </TooltipProvider>
       </div>
     </div>
   );
 }
 
 
-function ActionCard({ icon: Icon, label }: { icon: React.ElementType, label: string }) {
+function ActionCard({ icon: Icon, label, disabled = false }: { icon: React.ElementType, label: string, disabled?: boolean }) {
     return (
-        <Card className="h-24 flex flex-col items-center justify-center p-2 hover:bg-secondary transition-colors shadow-sm hover:shadow-md cursor-pointer">
-            <div className="bg-primary/10 p-3 rounded-full mb-2">
-                <Icon className="h-5 w-5 text-primary" />
+        <Card className={cn("h-24 flex flex-col items-center justify-center p-2 shadow-sm", 
+            disabled 
+            ? "bg-muted/50 cursor-not-allowed"
+            : "hover:bg-secondary transition-colors hover:shadow-md cursor-pointer"
+        )}>
+            <div className={cn("p-3 rounded-full mb-2", disabled ? "bg-muted" : "bg-primary/10")}>
+                <Icon className={cn("h-5 w-5", disabled ? "text-muted-foreground" : "text-primary")} />
             </div>
-            <p className="text-xs font-semibold text-center text-foreground">{label}</p>
+            <p className={cn("text-xs font-semibold text-center", disabled ? "text-muted-foreground" : "text-foreground")}>{label}</p>
         </Card>
     )
 }
