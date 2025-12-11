@@ -1,7 +1,6 @@
 "use client";
 
 import { useApp } from "@/context/AppContext";
-import { UserHeader } from "@/components/dashboard/UserHeader";
 import { LockerCard } from "@/components/dashboard/LockerCard";
 import { WalletCard } from "@/components/dashboard/WalletCard";
 import { QuickActions } from "@/components/dashboard/QuickActions";
@@ -14,7 +13,6 @@ export default function LockerPage() {
     <div className="h-full">
       {mode === 'Personal' ? (
         <>
-          <UserHeader />
           <LockerCard />
           <WalletCard />
           <QuickActions />

@@ -1,4 +1,5 @@
 import { BottomNav } from "@/components/BottomNav";
+import { UserHeader } from "@/components/dashboard/UserHeader";
 
 export default function AppLayout({
   children,
@@ -8,6 +9,7 @@ export default function AppLayout({
   return (
     <div className="flex justify-center bg-background min-h-screen">
         <div className="relative w-full max-w-md bg-background flex flex-col">
+            <UserHeader />
             <main className="flex-1 pb-20 overflow-y-auto">
                 {children}
             </main>

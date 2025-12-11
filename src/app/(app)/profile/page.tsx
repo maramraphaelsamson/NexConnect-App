@@ -4,8 +4,7 @@ import { useApp } from "@/context/AppContext";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { BusinessModeToggle } from "@/components/profile/BusinessModeToggle";
-import { LogOut } from "lucide-react";
+import { LogOut, ChevronRight, HelpCircle, MessageSquare, Phone } from "lucide-react";
 
 export default function ProfilePage() {
   const { user } = useApp();
@@ -27,7 +26,24 @@ export default function ProfilePage() {
             </CardHeader>
         </Card>
         
-        <BusinessModeToggle />
+        <Card>
+            <CardHeader>
+                <CardTitle className="font-headline">Support & Legal</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <div className="flex flex-col space-y-2 text-sm">
+                    <Button variant="ghost" className="justify-start -ml-4">
+                        <HelpCircle className="mr-2 h-4 w-4" /> FAQ
+                    </Button>
+                     <Button variant="ghost" className="justify-start -ml-4">
+                        <MessageSquare className="mr-2 h-4 w-4" /> Live Chat
+                    </Button>
+                     <Button variant="ghost" className="justify-start -ml-4">
+                        <Phone className="mr-2 h-4 w-4" /> Call Us
+                    </Button>
+                </div>
+            </CardContent>
+        </Card>
         
         <Card>
             <CardHeader>
@@ -37,6 +53,10 @@ export default function ProfilePage() {
                 <div className="flex justify-between items-center text-sm">
                     <span className="text-muted-foreground">App Version</span>
                     <span className="font-medium">1.0.0</span>
+                </div>
+                 <div className="flex justify-between items-center text-sm mt-2">
+                    <span className="text-muted-foreground">Device ID</span>
+                    <span className="font-medium text-xs">{user.id}</span>
                 </div>
             </CardContent>
         </Card>
