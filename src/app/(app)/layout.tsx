@@ -8,7 +8,7 @@ export default function AppLayout({
 }) {
   return (
     <div className="flex justify-center bg-background min-h-screen">
-        <div className="relative w-full max-w-md bg-background flex flex-col">
+        <div className="relative w-full max-w-md bg-card flex flex-col">
             <UserHeader />
             <main className="flex-1 pb-24 overflow-y-auto">
                 {children}
