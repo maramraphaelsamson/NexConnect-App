@@ -9,8 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth, useUser } from "@/firebase";
-import { initiateEmailSignIn, initiateEmailSignUp } from "@/firebase/non-blocking-login";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { initiateEmailSignIn, initiateEmailSignUp, initiateGoogleSignIn } from "@/firebase/non-blocking-login";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 
@@ -38,17 +37,8 @@ export default function SignupPage() {
         }
     }, [user, router]);
 
-    const handleGoogleSignIn = async () => {
-        const provider = new GoogleAuthProvider();
-        try {
-            await signInWithPopup(auth, provider);
-        } catch (error: any) {
-            toast({
-                variant: 'destructive',
-                title: 'Sign-in Failed',
-                description: error.message,
-            });
-        }
+    const handleGoogleSignIn = () => {
+        initiateGoogleSignIn(auth);
     };
 
     const handleEmailAuth = () => {
