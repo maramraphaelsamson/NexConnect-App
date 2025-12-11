@@ -23,6 +23,30 @@
       "description": "A generic background for generated receipts.",
       "imageUrl": "https://images.unsplash.com/photo-1585854467604-cf2080ccef31?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxhYnN0cmFjdCUyMHBhdHRlcm58ZW58MHx8fHwxNzY1MzU5MDE0fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "abstract pattern"
+    },
+    {
+      "id": "feature-data-locker",
+      "description": "A screenshot or representation of the data locker feature.",
+      "imageUrl": "https://images.unsplash.com/photo-1506399558188-acca6f8cbf41?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxkYXRhJTIwc3RvcmFnZXxlbnwwfHx8fDE3NjUzMjQyMTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "data storage"
+    },
+    {
+      "id": "feature-wallet",
+      "description": "A screenshot or representation of the wallet feature.",
+      "imageUrl": "https://images.unsplash.com/photo-1669060475309-33f02dc5404a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxkaWdpdGFsJTIwd2FsbGV0fGVufDB8fHx8MTc2NTQxOTk1M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "digital wallet"
+    },
+    {
+      "id": "feature-gift",
+      "description": "A screenshot or representation of the gifting feature.",
+      "imageUrl": "https://images.unsplash.com/photo-1575384043001-f37f48835528?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Z2lmdCUyMGdpdmluZ3xlbnwwfHx8fDE3NjU0MTk5NTN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "gift giving"
+    },
+    {
+      "id": "feature-business",
+      "description": "A screenshot or representation of the business dashboard.",
+      "imageUrl": "https://images.unsplash.com/photo-1748609278627-4b0e483b9b70?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxidXNpbmVzcyUyMGRhc2hib2FyZHxlbnwwfHx8fDE3NjU0MTk5NTJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "business dashboard"
     }
   ]
 }

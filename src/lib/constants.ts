@@ -1,4 +1,4 @@
-import { Shield, Calculator, Gift, User, Users, Clapperboard, Music, Globe, Settings, Briefcase, Activity } from "lucide-react";
+import { Shield, Calculator, Gift, User, Users, Clapperboard, Music, Globe, Settings, Briefcase, Activity, Wallet, Smartphone, Lightbulb } from "lucide-react";
 
 export const NAV_LINKS = {
   Personal: [
@@ -25,3 +25,34 @@ export const GIFT_VIBES = [
   { id: "for-my-love", label: "For My Love", imageId: "for-my-love" },
   { id: "work-flow", label: "Work Flow", imageId: "work-flow" },
 ] as const;
+
+export const FEATURE_SLIDES = [
+  {
+    id: "data-locker",
+    title: "Secure Data Locker",
+    description: "Buy data in bulk and store it forever. No more expiry dates!",
+    icon: Shield,
+    imageId: "feature-data-locker",
+  },
+  {
+    id: "wallet",
+    title: "Easy-to-Fund Wallet",
+    description: "Top up your wallet securely and make payments in a snap.",
+    icon: Wallet,
+    imageId: "feature-wallet",
+  },
+  {
+    id: "gift-data",
+    title: "Gift & Spray Data",
+    description: "Share data with friends or create viral giveaways for your audience.",
+    icon: Gift,
+    imageId: "feature-gift",
+  },
+  {
+    id: "business-mode",
+    title: "Become a Reseller",
+    description: "Switch to Business Mode and start earning by selling data and airtime.",
+    icon: Briefcase,
+    imageId: "feature-business",
+  },
+];
