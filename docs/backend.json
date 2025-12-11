@@ -1,0 +1,399 @@
+{
+  "entities": {
+    "UserProfile": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserProfile",
+      "type": "object",
+      "description": "Represents a user profile in the NexConnect application.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the UserProfile entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "User's full name."
+        },
+        "phoneNumber": {
+          "type": "string",
+          "description": "User's phone number for authentication and communication."
+        },
+        "email": {
+          "type": "string",
+          "description": "User's email address.",
+          "format": "email"
+        },
+        "profilePicture": {
+          "type": "string",
+          "description": "URL of the user's profile picture.",
+          "format": "uri"
+        },
+        "personalMode": {
+          "type": "boolean",
+          "description": "Indicates whether the user is in personal mode (true) or business mode (false)."
+        },
+        "businessName": {
+          "type": "string",
+          "description": "The name of the user's business, if they are in business mode."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "phoneNumber"
+      ]
+    },
+    "Locker": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Locker",
+      "type": "object",
+      "description": "Represents a user's data locker.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Locker entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to UserProfile. (Relationship: UserProfile 1:1 Locker)"
+        },
+        "balanceGB": {
+          "type": "number",
+          "description": "Data balance in Gigabytes."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "balanceGB"
+      ]
+    },
+    "Wallet": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Wallet",
+      "type": "object",
+      "description": "Represents a user's cash wallet.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Wallet entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to UserProfile. (Relationship: UserProfile 1:1 Wallet)"
+        },
+        "balanceNaira": {
+          "type": "number",
+          "description": "Cash balance in Naira."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "balanceNaira"
+      ]
+    },
+    "Transaction": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Transaction",
+      "type": "object",
+      "description": "Represents a transaction performed by a user.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Transaction entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to UserProfile. (Relationship: UserProfile 1:N Transaction)"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of transaction (e.g., 'Buy Data', 'Buy Airtime', 'Pay Bills', 'Withdraw')."
+        },
+        "amount": {
+          "type": "number",
+          "description": "Amount of the transaction."
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Timestamp of the transaction.",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of the transaction (e.g., 'Pending', 'Completed', 'Failed')."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "type",
+        "amount",
+        "timestamp",
+        "status"
+      ]
+    },
+    "DataSpray": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "DataSpray",
+      "type": "object",
+      "description": "Represents a data spray campaign created by a user.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the DataSpray entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to UserProfile. (Relationship: UserProfile 1:N DataSpray)"
+        },
+        "totalDataAmountGB": {
+          "type": "number",
+          "description": "Total data amount allocated for the spray in Gigabytes."
+        },
+        "numberOfWinners": {
+          "type": "number",
+          "description": "Number of winners for the data spray."
+        },
+        "mode": {
+          "type": "string",
+          "description": "Mode of the data spray (e.g., 'Fastest Fingers')."
+        },
+        "link": {
+          "type": "string",
+          "description": "Unique URL link for the data spray."
+        },
+        "escrowBalanceGB": {
+          "type": "number",
+          "description": "The data balance held in escrow for the spray."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "totalDataAmountGB",
+        "numberOfWinners",
+        "mode",
+        "link"
+      ]
+    },
+    "SavedCustomer": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "SavedCustomer",
+      "type": "object",
+      "description": "Represents a saved customer for a business user.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the SavedCustomer entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to UserProfile. (Relationship: UserProfile 1:N SavedCustomer)"
+        },
+        "customerName": {
+          "type": "string",
+          "description": "Name of the saved customer."
+        },
+        "customerPhoneNumber": {
+          "type": "string",
+          "description": "Phone number of the saved customer."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "customerName",
+        "customerPhoneNumber"
+      ]
+    },
+    "VendorLink": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "VendorLink",
+      "type": "object",
+      "description": "Represents a vendor link for automated business sales.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the VendorLink entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to UserProfile. (Relationship: UserProfile 1:N VendorLink)"
+        },
+        "link": {
+          "type": "string",
+          "description": "The unique URL for the vendor link."
+        },
+        "costPrice": {
+          "type": "number",
+          "description": "The cost price of the data/airtime."
+        },
+        "sellingPrice": {
+          "type": "number",
+          "description": "The selling price of the data/airtime set by the vendor."
+        },
+        "profit": {
+          "type": "number",
+          "description": "The profit the vendor makes on a sale through this link."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "link",
+        "costPrice",
+        "sellingPrice",
+        "profit"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "UserProfile",
+          "schema": {
+            "$ref": "#/backend/entities/UserProfile"
+          },
+          "description": "Stores user profile information. The `userId` parameter corresponds to the user's unique Firebase Authentication UID.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user, obtained from Firebase Authentication."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/lockers/{lockerId}",
+        "definition": {
+          "entityName": "Locker",
+          "schema": {
+            "$ref": "#/backend/entities/Locker"
+          },
+          "description": "Stores user's data locker information. The `userId` parameter corresponds to the user's unique Firebase Authentication UID.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user, obtained from Firebase Authentication."
+            },
+            {
+              "name": "lockerId",
+              "description": "The unique identifier for the Locker entity."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/wallets/{walletId}",
+        "definition": {
+          "entityName": "Wallet",
+          "schema": {
+            "$ref": "#/backend/entities/Wallet"
+          },
+          "description": "Stores user's wallet information. The `userId` parameter corresponds to the user's unique Firebase Authentication UID.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user, obtained from Firebase Authentication."
+            },
+            {
+              "name": "walletId",
+              "description": "The unique identifier for the Wallet entity."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/transactions/{transactionId}",
+        "definition": {
+          "entityName": "Transaction",
+          "schema": {
+            "$ref": "#/backend/entities/Transaction"
+          },
+          "description": "Stores user's transaction history. The `userId` parameter corresponds to the user's unique Firebase Authentication UID.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user, obtained from Firebase Authentication."
+            },
+            {
+              "name": "transactionId",
+              "description": "The unique identifier for the Transaction entity."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/dataSprays/{dataSprayId}",
+        "definition": {
+          "entityName": "DataSpray",
+          "schema": {
+            "$ref": "#/backend/entities/DataSpray"
+          },
+          "description": "Stores user's data spray campaigns. The `userId` parameter corresponds to the user's unique Firebase Authentication UID.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user, obtained from Firebase Authentication."
+            },
+            {
+              "name": "dataSprayId",
+              "description": "The unique identifier for the DataSpray entity."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/savedCustomers/{savedCustomerId}",
+        "definition": {
+          "entityName": "SavedCustomer",
+          "schema": {
+            "$ref": "#/backend/entities/SavedCustomer"
+          },
+          "description": "Stores user's saved customers for business mode. The `userId` parameter corresponds to the user's unique Firebase Authentication UID.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user, obtained from Firebase Authentication."
+            },
+            {
+              "name": "savedCustomerId",
+              "description": "The unique identifier for the SavedCustomer entity."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/vendorLinks/{vendorLinkId}",
+        "definition": {
+          "entityName": "VendorLink",
+          "schema": {
+            "$ref": "#/backend/entities/VendorLink"
+          },
+          "description": "Stores user's vendor links for automated business sales. The `userId` parameter corresponds to the user's unique Firebase Authentication UID.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user, obtained from Firebase Authentication."
+            },
+            {
+              "name": "vendorLinkId",
+              "description": "The unique identifier for the VendorLink entity."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to ensure security, scalability, and ease of debugging, following the principles of Authorization Independence, Clarity of Intent, DBAC (Database-Based Access Control), QAPs (Rules are not Filters), and Invariants. User profiles are stored under `/users/{userId}`. Data lockers, wallets, transactions, data sprays, saved customers and vendor links are stored in subcollections under the user document to take advantage of path-based rules. This approach offers authorization independence by avoiding `get()` calls in security rules. All read and write operations are atomic.\n\nQAPs (Rules are not Filters) are supported by segregating data based on access requirements. User-specific data (transactions, locker, wallet) resides in dedicated subcollections, allowing straightforward security rules based on `request.auth.uid`. The structure also makes authorization intent explicit. The use of path-based ownership (`/users/{userId}/lockers/{lockerId}`) makes it easy to define security rules that grant access only to the authenticated user. This design supports secure `list` operations, as rules can efficiently filter based on path and avoid costly filtering logic within the rules themselves."
+  }
+}

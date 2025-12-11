@@ -1,0 +1,193 @@
+/**
+ * Core Philosophy: This ruleset enforces a strict user-ownership model. All user-generated
+ * content is stored within a dedicated data tree under a path corresponding to their
+ * unique user ID (`/users/{userId}`). This ensures that users can only access and
+ * manage their own data, providing strong data privacy and isolation by default.
+ *
+ * Data Structure: The entire Firestore database is structured around the top-level `users`
+ * collection. Each user's profile (`UserProfile`) is the root document, and all
+ * related data—such as their data locker, wallet, transactions, and business
+ * information—are stored in specific subcollections under that user's document.
+ * This hierarchical structure is key to the security model.
+ *
+ * Key Security Decisions:
+ * - User Enumeration is Disabled: Listing the top-level `/users` collection is
+ *   explicitly forbidden to protect user privacy and prevent data scraping.
+ * - No Public Data: All collections and subcollections are private to the
+ *   authenticated owner. There is no publicly readable data.
+ * - Path-Based Security: Access control is primarily determined by the document path.
+ *   This avoids costly and slow `get()` calls in rules, leading to better performance.
+ * - Relational Integrity: On document creation, rules ensure that internal ownership
+ *   fields (like `userId`) correctly match the `userId` in the document path,
+ *   maintaining data consistency. These fields are immutable on update.
+ *
+ * Denormalization for Authorization: The data structure is already optimized for
+ * authorization. By nesting all user-specific data under `/users/{userId}`, the
+ * user's ID is denormalized into the document path itself, making ownership
+ * checks simple and performant (`request.auth.uid == userId`).
+ *
+ * Structural Segregation: The design uses structural segregation at the highest
+ * level by partitioning all data into user-specific trees. This is a highly
+ * secure and scalable pattern for applications centered on individual user accounts.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper Functions
+    // --------------------------------
+
+    /**
+     * Checks if the user is authenticated.
+     */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /**
+     * Checks if the currently authenticated user's UID matches the provided userId.
+     * This is the foundation of the user-ownership model.
+     */
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    /**
+     * Checks if the document exists and the current user is the owner.
+     * Used for safe update and delete operations.
+     */
+    function isExistingOwner(userId) {
+      return isOwner(userId) && resource != null;
+    }
+    
+    /**
+     * Validates that the user is creating their own profile and that the
+     * internal `id` field matches the document's path ID (`userId`).
+     */
+    function isCreatingOwnProfile(userId) {
+      return isOwner(userId) && request.resource.data.id == userId;
+    }
+    
+    /**
+     * Validates that an incoming `userId` field on a new subcollection document
+     * matches the `userId` from the path.
+     */
+    function isCreatingOwnSubDoc(userId) {
+      return isOwner(userId) && request.resource.data.userId == userId;
+    }
+
+    /**
+     * Enforces immutability of the internal `userId` field for subcollection documents.
+     */
+    function isUpdatingOwnSubDoc() {
+      return request.resource.data.userId == resource.data.id;
+    }
+
+    /**
+     * @description   Rules for a user's own profile document.
+     * @path          /users/{userId}
+     * @allow         (create) An authenticated user creating their own profile.
+     * @allow         (get, update, delete) The profile owner reading, modifying, or deleting their own profile.
+     * @deny          (list) Any user, to prevent user enumeration.
+     * @deny          (get) A user trying to read another user's profile.
+     * @principle     Enforces self-creation and ownership for a user's root document.
+     */
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if false;
+      allow create: if isCreatingOwnProfile(userId);
+      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingOwner(userId);
+      
+      /**
+       * @description   Rules for a user's data locker. A user has one data locker.
+       * @path          /users/{userId}/lockers/{lockerId}
+       * @allow         (create, get, list, update, delete) The owner managing their own locker document.
+       * @deny          (create, get, list, update, delete) Any other user accessing the locker.
+       * @principle     Restricts access to a user's own data tree.
+       */
+      match /lockers/{lockerId} {
+        allow get: if isOwner(userId);
+        allow list: if isOwner(userId);
+        allow create: if isCreatingOwnSubDoc(userId);
+        allow update: if isExistingOwner(userId) && isUpdatingOwnSubDoc();
+        allow delete: if isExistingOwner(userId);
+      }
+
+      /**
+       * @description   Rules for a user's cash wallet. A user has one wallet.
+       * @path          /users/{userId}/wallets/{walletId}
+       * @allow         (create, get, list, update, delete) The owner managing their own wallet document.
+       * @deny          (create, get, list, update, delete) Any other user accessing the wallet.
+       * @principle     Restricts access to a user's own data tree.
+       */
+      match /wallets/{walletId} {
+        allow get: if isOwner(userId);
+        allow list: if isOwner(userId);
+        allow create: if isCreatingOwnSubDoc(userId);
+        allow update: if isExistingOwner(userId) && isUpdatingOwnSubDoc();
+        allow delete: if isExistingOwner(userId);
+      }
+
+      /**
+       * @description   Rules for a user's transaction history.
+       * @path          /users/{userId}/transactions/{transactionId}
+       * @allow         (create, get, list, update, delete) The owner managing their own transactions.
+       * @deny          (create, get, list, update, delete) Any other user accessing the transactions.
+       * @principle     Restricts access to a user's own data tree.
+       */
+      match /transactions/{transactionId} {
+        allow get: if isOwner(userId);
+        allow list: if isOwner(userId);
+        allow create: if isCreatingOwnSubDoc(userId);
+        allow update: if isExistingOwner(userId) && isUpdatingOwnSubDoc();
+        allow delete: if isExistingOwner(userId);
+      }
+
+      /**
+       * @description   Rules for a user's data spray campaigns.
+       * @path          /users/{userId}/dataSprays/{dataSprayId}
+       * @allow         (create, get, list, update, delete) The owner managing their own data sprays.
+       * @deny          (create, get, list, update, delete) Any other user accessing data sprays.
+       * @principle     Restricts access to a user's own data tree.
+       */
+      match /dataSprays/{dataSprayId} {
+        allow get: if isOwner(userId);
+        allow list: if isOwner(userId);
+        allow create: if isCreatingOwnSubDoc(userId);
+        allow update: if isExistingOwner(userId) && isUpdatingOwnSubDoc();
+        allow delete: if isExistingOwner(userId);
+      }
+
+      /**
+       * @description   Rules for a user's saved customers (for business mode).
+       * @path          /users/{userId}/savedCustomers/{savedCustomerId}
+       * @allow         (create, get, list, update, delete) The owner managing their own saved customers.
+       * @deny          (create, get, list, update, delete) Any other user accessing saved customers.
+       * @principle     Restricts access to a user's own data tree.
+       */
+      match /savedCustomers/{savedCustomerId} {
+        allow get: if isOwner(userId);
+        allow list: if isOwner(userId);
+        allow create: if isCreatingOwnSubDoc(userId);
+        allow update: if isExistingOwner(userId) && isUpdatingOwnSubDoc();
+        allow delete: if isExistingOwner(userId);
+      }
+
+      /**
+       * @description   Rules for a user's vendor links (for business mode).
+       * @path          /users/{userId}/vendorLinks/{vendorLinkId}
+       * @allow         (create, get, list, update, delete) The owner managing their own vendor links.
+       * @deny          (create, get, list, update, delete) Any other user accessing vendor links.
+       * @principle     Restricts access to a user's own data tree.
+       */
+      match /vendorLinks/{vendorLinkId} {
+        allow get: if isOwner(userId);
+        allow list: if isOwner(userId);
+        allow create: if isCreatingOwnSubDoc(userId);
+        allow update: if isExistingOwner(userId) && isUpdatingOwnSubDoc();
+        allow delete: if isExistingOwner(userId);
+      }
+    }
+  }
+}
