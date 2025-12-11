@@ -12,11 +12,11 @@ export default function LockerPage() {
   return (
     <div className="h-full">
       {mode === 'Personal' ? (
-        <>
+        <div className="space-y-4">
           <LockerCard />
           <WalletCard />
           <QuickActions />
-        </>
+        </div>
       ) : (
         <BusinessDashboard />
       )}

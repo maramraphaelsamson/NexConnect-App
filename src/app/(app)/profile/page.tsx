@@ -4,7 +4,7 @@ import { useApp } from "@/context/AppContext";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { LogOut, ChevronRight, HelpCircle, MessageSquare, Phone } from "lucide-react";
+import { LogOut, ChevronRight, HelpCircle, MessageSquare, Phone, ShieldQuestion, FileText, Info } from "lucide-react";
 
 export default function ProfilePage() {
   const { user } = useApp();
@@ -14,7 +14,7 @@ export default function ProfilePage() {
         <Card>
             <CardHeader>
                 <div className="flex items-center gap-4">
-                    <Avatar className="h-16 w-16">
+                    <Avatar className="h-16 w-16 border-2 border-primary">
                         <AvatarImage src={`https://api.dicebear.com/8.x/initials/svg?seed=${user.name}`} alt={user.name} />
                         <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
                     </Avatar>
@@ -28,26 +28,20 @@ export default function ProfilePage() {
         
         <Card>
             <CardHeader>
-                <CardTitle className="font-headline">Support & Legal</CardTitle>
+                <CardTitle className="font-headline text-lg">Support & Legal</CardTitle>
             </CardHeader>
-            <CardContent>
-                <div className="flex flex-col space-y-2 text-sm">
-                    <Button variant="ghost" className="justify-start -ml-4">
-                        <HelpCircle className="mr-2 h-4 w-4" /> FAQ
-                    </Button>
-                     <Button variant="ghost" className="justify-start -ml-4">
-                        <MessageSquare className="mr-2 h-4 w-4" /> Live Chat
-                    </Button>
-                     <Button variant="ghost" className="justify-start -ml-4">
-                        <Phone className="mr-2 h-4 w-4" /> Call Us
-                    </Button>
-                </div>
+            <CardContent className="divide-y">
+                <SupportItem icon={HelpCircle} label="FAQ" />
+                <SupportItem icon={MessageSquare} label="Live Chat" />
+                <SupportItem icon={Phone} label="Call Us" />
+                <SupportItem icon={ShieldQuestion} label="Privacy Policy" />
+                <SupportItem icon={FileText} label="Terms of Service" />
             </CardContent>
         </Card>
         
         <Card>
             <CardHeader>
-                <CardTitle className="font-headline">App Info</CardTitle>
+                <CardTitle className="font-headline text-lg">App Info</CardTitle>
             </CardHeader>
             <CardContent>
                 <div className="flex justify-between items-center text-sm">
@@ -67,3 +61,11 @@ export default function ProfilePage() {
     </div>
   );
 }
+
+const SupportItem = ({ icon: Icon, label }: { icon: React.ElementType, label: string }) => (
+    <Button variant="ghost" className="w-full justify-start -ml-4 py-6 text-base">
+        <Icon className="mr-3 h-5 w-5 text-muted-foreground" /> 
+        <span>{label}</span>
+        <ChevronRight className="ml-auto h-5 w-5 text-muted-foreground" />
+    </Button>
+)

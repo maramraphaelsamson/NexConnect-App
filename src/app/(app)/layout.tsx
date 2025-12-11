@@ -10,7 +10,7 @@ export default function AppLayout({
     <div className="flex justify-center bg-background min-h-screen">
         <div className="relative w-full max-w-md bg-background flex flex-col">
             <UserHeader />
-            <main className="flex-1 pb-20 overflow-y-auto">
+            <main className="flex-1 pb-24 overflow-y-auto">
                 {children}
             </main>
             <BottomNav />

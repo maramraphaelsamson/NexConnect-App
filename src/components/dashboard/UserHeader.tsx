@@ -10,29 +10,26 @@ export function UserHeader() {
   const { user, mode, toggleMode } = useApp();
 
   return (
-    <div className="flex justify-between items-center p-4 bg-background">
-      <div>
-        <h1 className="text-2xl font-headline font-bold text-foreground">
-          Hello {user.name}
-        </h1>
-        <p className="text-sm text-muted-foreground">ID: {user.id.split('-')[0]}...</p>
-      </div>
-      <div className="flex items-center gap-2">
+    <header className="flex justify-between items-center p-4 bg-transparent">
+      <h1 className="text-xl font-headline font-bold text-foreground">
+          Tunde Ventures
+      </h1>
+      <div className="flex items-center gap-3">
         <Button 
-          variant={mode === 'Personal' ? 'secondary' : 'default'} 
+          variant={mode === 'Personal' ? 'secondary' : 'default'}
+          size="sm"
           onClick={toggleMode}
-          className="rounded-full px-4 py-2 h-auto text-sm"
+          className="rounded-full data-[state=on]:bg-blue-200 data-[state=on]:text-blue-800"
         >
-            {mode === 'Personal' ? <User className="mr-2 h-4 w-4" /> : <Briefcase className="mr-2 h-4 w-4" />}
-            {mode}
+            Personal
         </Button>
         <Link href="/profile">
-            <Avatar className="h-9 w-9 cursor-pointer">
+            <Avatar className="h-9 w-9 cursor-pointer border-2 border-primary/50">
                 <AvatarImage src={`https://api.dicebear.com/8.x/initials/svg?seed=${user.name}`} alt={user.name} />
                 <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
             </Avatar>
         </Link>
       </div>
-    </div>
+    </header>
   );
 }

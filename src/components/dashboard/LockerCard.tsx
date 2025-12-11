@@ -1,26 +1,26 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowDownToLine, PlusCircle } from "lucide-react";
 import { BuyDataSheet } from "@/components/dashboard/personal/BuyDataSheet";
 
 export function LockerCard() {
-  const lockerBalance = 120.5; // Dummy data
+  const lockerBalance = 12.50; // Dummy data
 
   return (
-    <Card className="m-4 bg-gradient-to-br from-primary to-blue-800 text-primary-foreground shadow-lg">
+    <Card className="m-4 bg-gradient-to-br from-blue-500 to-cyan-400 text-primary-foreground shadow-lg">
       <CardHeader>
-        <CardDescription className="text-blue-200">Locker Balance</CardDescription>
-        <CardTitle className="text-4xl font-bold font-headline">
-          {lockerBalance.toFixed(1)} <span className="text-2xl font-body">GB</span>
+        <CardDescription className="text-blue-100">Data Locker</CardDescription>
+        <CardTitle className="text-5xl font-bold font-headline">
+          {lockerBalance.toFixed(2)} <span className="text-3xl font-body">GB</span>
         </CardTitle>
+        <p className="text-sm text-blue-200 pt-1">Non-Expiring Storage</p>
       </CardHeader>
-      <CardContent className="flex gap-4">
-        <Button variant="secondary" className="w-full bg-white/20 hover:bg-white/30 text-white">
-          <ArrowDownToLine className="mr-2 h-4 w-4" /> Withdraw
+      <CardContent className="flex gap-4 pt-2">
+        <Button variant="outline" className="w-full bg-transparent hover:bg-white/10 text-white border-white/50">
+          Withdraw
         </Button>
         <BuyDataSheet>
-          <Button variant="secondary" className="w-full bg-white/90 hover:bg-white text-primary">
-            <PlusCircle className="mr-2 h-4 w-4" /> Add Bulk
+          <Button variant="secondary" className="w-full bg-white hover:bg-gray-100 text-blue-600 font-semibold">
+            Add Bulk
           </Button>
         </BuyDataSheet>
       </CardContent>

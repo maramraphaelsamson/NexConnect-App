@@ -1,11 +1,17 @@
-import { Shield, Calculator, Gift, User, Users, Clapperboard, Music, Globe } from "lucide-react";
+import { Shield, Calculator, Gift, User, Users, Clapperboard, Music, Globe, Settings, Briefcase, Activity } from "lucide-react";
 
-export const NAV_LINKS = [
-  { href: "/locker", label: "Locker", icon: Shield },
-  { href: "/calculator", label: "Calculator", icon: Calculator },
-  { href: "/gift-spray", label: "Gift/Spray", icon: Gift },
-  { href: "/profile", label: "Profile", icon: User },
-];
+export const NAV_LINKS = {
+  Personal: [
+    { href: "/locker", label: "Dashboard", icon: Shield },
+    { href: "/calculator", label: "Activity", icon: Activity },
+    { href: "/profile", label: "Profile", icon: User },
+  ],
+  Business: [
+      { href: "/locker", label: "Dashboard", icon: Briefcase },
+      { href: "/gift-spray", label: "Customers", icon: Users },
+      { href: "/profile", label: "Settings", icon: Settings },
+  ]
+};
 
 export const CALCULATOR_SLIDERS = [
   { id: "social", label: "Social Media", icon: Users, color: "text-blue-500" },
