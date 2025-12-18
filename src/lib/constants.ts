@@ -1,9 +1,10 @@
-import { Shield, Calculator, Gift, User, Users, Clapperboard, Music, Globe, Settings, Briefcase, Activity, Wallet, Smartphone, Lightbulb, LifeBuoy } from "lucide-react";
+import { Shield, Calculator, Gift, User, Users, Clapperboard, Music, Globe, Settings, Briefcase, Activity, Wallet, Smartphone, Lightbulb, LifeBuoy, History } from "lucide-react";
 
 export const NAV_LINKS = {
   Personal: [
     { href: "/locker", label: "Dashboard", icon: Shield },
-    { href: "/calculator", label: "Activity", icon: Activity },
+    { href: "/calculator", label: "Calculator", icon: Calculator },
+    { href: "/history", label: "History", icon: History },
     { href: "/profile", label: "Profile", icon: User },
   ],
   Business: [

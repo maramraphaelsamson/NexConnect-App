@@ -29,12 +29,13 @@ export function QuickActions() {
     {
       label: "Pay Bills",
       icon: Lightbulb,
-      href: "#"
+      href: "#",
+      disabled: true
     },
     {
       label: "History",
       icon: History,
-      href: "#"
+      href: "/history"
     }
   ];
 
@@ -48,22 +49,10 @@ export function QuickActions() {
           }
           return (
             <Link href={action.href || "#"} key={action.label} passHref>
-                <ActionCard icon={action.icon} label={action.label} />
+                <ActionCard icon={action.icon} label={action.label} disabled={action.disabled} />
             </Link>
           );
         })}
-        <TooltipProvider>
-            <Tooltip>
-                <TooltipTrigger asChild>
-                    <div className="w-full">
-                        <ActionCard icon={LifeBuoy} label="Rescue Me" disabled />
-                    </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                    <p>Coming Soon! A feature for loyal customers.</p>
-                </TooltipContent>
-            </Tooltip>
-        </TooltipProvider>
       </div>
     </div>
   );
