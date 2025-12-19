@@ -1,9 +1,10 @@
-import { Shield, Calculator, Gift, User, Users, Clapperboard, Music, Globe, Settings, Briefcase, Activity, Wallet, Smartphone, Lightbulb, LifeBuoy, History } from "lucide-react";
+import { Shield, Calculator, Gift, User, Users, Clapperboard, Music, Globe, Settings, Briefcase, Activity, Wallet, Smartphone, Lightbulb, LifeBuoy, History, Megaphone } from "lucide-react";
 
 export const NAV_LINKS = {
   Personal: [
     { href: "/locker", label: "Dashboard", icon: Shield },
     { href: "/calculator", label: "Calculator", icon: Calculator },
+    { href: "/gift-spray", label: "Gift/Spray", icon: Gift },
     { href: "/history", label: "History", icon: History },
     { href: "/profile", label: "Profile", icon: User },
   ],
@@ -52,7 +53,7 @@ export const FEATURE_SLIDES = [
   {
     id: "business-mode",
     title: "Become a Reseller",
-    description: "Switch to Business Mode and start earning by selling data and airtime.",
+    description: "Switch to Business Mode and start making profit by selling data and airtime.",
     icon: Briefcase,
     imageId: "feature-business",
   },

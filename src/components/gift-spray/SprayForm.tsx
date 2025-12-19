@@ -19,21 +19,32 @@ import { Megaphone, Copy, Check } from "lucide-react";
 export function SprayForm() {
     const [generatedLink, setGeneratedLink] = useState("");
     const [isCopied, setIsCopied] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
     const handleGenerate = () => {
-        // In a real app, this would be an API call
+        // In a real app, this would be an API call that returns a unique ID
         const uniqueId = Math.random().toString(36).substring(7);
         setGeneratedLink(`https://nexconnect.ng/spray/${uniqueId}`);
     };
 
     const handleCopy = () => {
+        if (!generatedLink) return;
         navigator.clipboard.writeText(generatedLink);
         setIsCopied(true);
         setTimeout(() => setIsCopied(false), 2000);
     };
+    
+    const handleOpenChange = (open: boolean) => {
+        setIsOpen(open);
+        if (!open) {
+            // Reset state when sheet is closed
+            setGeneratedLink("");
+            setIsCopied(false);
+        }
+    }
 
     return (
-        <Sheet>
+        <Sheet open={isOpen} onOpenChange={handleOpenChange}>
             <SheetTrigger asChild>
                 <Card className="h-48 flex flex-col items-center justify-center p-4 hover:bg-accent/50 transition-colors cursor-pointer shadow-md">
                     <Megaphone className="h-10 w-10 text-accent mb-2" />
@@ -45,7 +56,7 @@ export function SprayForm() {
                 <SheetHeader>
                     <SheetTitle className="font-headline flex items-center gap-2"><Megaphone /> Create Data Spray</SheetTitle>
                     <SheetDescription>
-                        Generate a unique link for a data giveaway.
+                        Generate a unique link for a data giveaway. Your data will be held in escrow.
                     </SheetDescription>
                 </SheetHeader>
                 <div className="p-4 space-y-6">
@@ -68,23 +79,27 @@ export function SprayForm() {
                                         <RadioGroupItem value="fastest" id="fastest" />
                                         <Label htmlFor="fastest">Fastest Fingers (Lucky Dip)</Label>
                                     </div>
+                                    <div className="flex items-center space-x-2 opacity-50 cursor-not-allowed">
+                                        <RadioGroupItem value="raffle" id="raffle" disabled />
+                                        <Label htmlFor="raffle">Raffle Draw (Coming Soon)</Label>
+                                    </div>
                                 </RadioGroup>
                             </div>
                             <Button size="lg" className="w-full" onClick={handleGenerate}>
-                                Generate Link
+                                Generate Link &amp; Escrow Data
                             </Button>
                         </>
                     ) : (
                         <div className="space-y-4 text-center">
                             <h3 className="font-semibold text-lg">Link Generated!</h3>
-                            <p className="text-sm text-muted-foreground">Your data has been deducted. Share the link below.</p>
+                            <p className="text-sm text-muted-foreground">Your data has been deducted from your locker. Share the link below.</p>
                              <div className="flex gap-2">
-                                <Input value={generatedLink} readOnly />
-                                <Button size="icon" onClick={handleCopy}>
-                                    {isCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                                <Input value={generatedLink} readOnly className="text-center" />
+                                <Button size="icon" onClick={handleCopy} aria-label="Copy link">
+                                    {isCopied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                                 </Button>
                             </div>
-                            <Button variant="outline" onClick={() => setGeneratedLink("")} className="w-full">Create another Spray</Button>
+                            <Button variant="secondary" className="w-full" onClick={() => handleOpenChange(false)}>Done</Button>
                         </div>
                     )}
                 </div>
