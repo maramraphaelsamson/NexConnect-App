@@ -6,9 +6,10 @@ import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 import Link from 'next/link';
 import { useAuth } from "@/firebase";
+import { cn } from "@/lib/utils";
 
 export function UserHeader() {
-  const { user, mode, toggleMode } = useApp();
+  const { user, mode, setMode } = useApp();
   const auth = useAuth();
 
   const getInitials = (name: string | null | undefined) => {
@@ -26,14 +27,24 @@ export function UserHeader() {
           Tunde Ventures
       </h1>
       <div className="flex items-center gap-3">
-        <Button 
-          variant={mode === 'Personal' ? 'secondary' : 'default'}
-          size="sm"
-          onClick={toggleMode}
-          className="rounded-full data-[state=on]:bg-blue-200 data-[state=on]:text-blue-800"
-        >
-            {mode}
-        </Button>
+         <div className="flex items-center p-1 bg-secondary rounded-lg">
+           <Button
+              variant={mode === 'Personal' ? 'primary' : 'ghost'}
+              size="sm"
+              onClick={() => setMode('Personal')}
+              className={cn("text-xs h-7 px-3", mode === 'Personal' && "shadow-sm")}
+            >
+              Personal
+            </Button>
+            <Button
+              variant={mode === 'Business' ? 'primary' : 'ghost'}
+              size="sm"
+              onClick={() => setMode('Business')}
+              className={cn("text-xs h-7 px-3", mode === 'Business' && "shadow-sm")}
+            >
+              Business
+            </Button>
+         </div>
         {user ? (
             <div className="flex items-center gap-3">
                 <Link href="/profile">
@@ -42,9 +53,6 @@ export function UserHeader() {
                         <AvatarFallback>{getInitials(user.displayName)}</AvatarFallback>
                     </Avatar>
                 </Link>
-                <Button variant="ghost" size="icon" onClick={() => auth.signOut()}>
-                    <LogOut className="h-5 w-5" />
-                </Button>
             </div>
         ) : (
              <Link href="/signup">

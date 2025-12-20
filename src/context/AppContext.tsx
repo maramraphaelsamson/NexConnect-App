@@ -9,6 +9,7 @@ type Mode = 'Personal' | 'Business';
 interface AppContextType {
   mode: Mode;
   toggleMode: () => void;
+  setMode: (mode: Mode) => void;
   user: User | null;
   isUserLoading: boolean;
 }
@@ -32,7 +33,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AppContext.Provider value={{ mode, toggleMode, user, isUserLoading }}>
+    <AppContext.Provider value={{ mode, toggleMode, setMode, user, isUserLoading }}>
       {children}
     </AppContext.Provider>
   );
