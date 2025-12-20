@@ -61,14 +61,12 @@ export default function SignupPage() {
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-background to-blue-50">
       <Card className="w-full max-w-sm mx-4">
         <CardHeader className="text-center">
-           <div className="relative w-20 h-20 mx-auto mb-4">
+           <div className="relative w-24 h-24 mx-auto mb-4">
               <Image
-                src="https://picsum.photos/seed/rocket/200/200"
-                alt="NexConnect Rocket"
+                src="https://storage.googleapis.com/project-spark-302915.appspot.com/users%2Fstudio-output%2F71597405-c07a-4b03-9d0f-652f4002e219.png"
+                alt="NexConnect Logo"
                 layout="fill"
-                objectFit="cover"
-                className="rounded-full"
-                 data-ai-hint="rocket launch"
+                objectFit="contain"
               />
             </div>
           <CardTitle className="font-headline text-2xl">{isLogin ? 'Welcome Back' : 'Create an Account'}</CardTitle>
