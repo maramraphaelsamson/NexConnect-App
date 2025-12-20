@@ -12,6 +12,7 @@ import { Skeleton } from "../ui/skeleton";
 interface UserProfile {
     name: string;
     businessName?: string;
+    profilePicture?: string;
 }
 
 export function UserHeader() {
@@ -39,8 +40,8 @@ export function UserHeader() {
     if (isProfileLoading) return <Skeleton className="h-6 w-32" />;
     if (!userProfile) return user?.displayName || "User";
 
-    if (mode === 'Business') {
-        return userProfile.businessName || userProfile.name;
+    if (mode === 'Business' && userProfile.businessName) {
+        return userProfile.businessName;
     }
     return userProfile.name;
   }
@@ -73,7 +74,7 @@ export function UserHeader() {
             <div className="flex items-center gap-3">
                 <Link href="/profile">
                     <Avatar className="h-9 w-9 cursor-pointer border-2 border-primary/50">
-                        <AvatarImage src={user.photoURL || `https://api.dicebear.com/8.x/initials/svg?seed=${userProfile?.name || user.email}`} alt={userProfile?.name || 'User'} />
+                        <AvatarImage src={userProfile?.profilePicture} alt={userProfile?.name || 'User'} />
                         <AvatarFallback>{getInitials(userProfile?.name)}</AvatarFallback>
                     </Avatar>
                 </Link>

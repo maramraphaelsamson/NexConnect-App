@@ -16,12 +16,12 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Loader2 } from "lucide-react";
 
 const profileSchema = z.object({
     name: z.string().min(2, { message: "Name must be at least 2 characters." }),
     businessName: z.string().optional(),
-    profilePicture: z.string().url({ message: "Please enter a valid URL." }).optional().or(z.literal('')),
 });
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
@@ -51,7 +51,6 @@ export default function EditProfilePage() {
         defaultValues: {
             name: "",
             businessName: "",
-            profilePicture: "",
         },
     });
 
@@ -66,20 +65,31 @@ export default function EditProfilePage() {
             form.reset({
                 name: userProfile.name || "",
                 businessName: userProfile.businessName || "",
-                profilePicture: userProfile.profilePicture || "",
             });
         }
     }, [userProfile, form]);
+    
+    const getInitials = (name: string | null | undefined) => {
+        if (!name) return "NN";
+        const names = name.split(' ');
+        if (names.length > 1) {
+          return names[0][0] + names[names.length - 1][0];
+        }
+        return name.substring(0, 2);
+    }
 
     const onSubmit = async (data: ProfileFormValues) => {
         if (!userRef) return;
         setIsSaving(true);
         try {
+            const avatarUrl = `https://api.dicebear.com/8.x/initials/svg?seed=${data.name || user?.email}`;
+            
             updateDocumentNonBlocking(userRef, {
                 name: data.name,
                 businessName: data.businessName,
-                profilePicture: data.profilePicture
+                profilePicture: avatarUrl
             });
+            
             toast({
                 title: "Profile Updated",
                 description: "Your changes have been saved.",
@@ -113,6 +123,12 @@ export default function EditProfilePage() {
                     <CardDescription>Manage your personal and business information.</CardDescription>
                 </CardHeader>
                 <CardContent>
+                    <div className="flex justify-center mb-6">
+                        <Avatar className="h-24 w-24 border-4 border-primary/50">
+                            <AvatarImage src={userProfile?.profilePicture} alt={userProfile?.name || 'User'} />
+                            <AvatarFallback className="text-3xl">{getInitials(form.watch('name') || userProfile?.name)}</AvatarFallback>
+                        </Avatar>
+                    </div>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                             <FormField
@@ -141,20 +157,7 @@ export default function EditProfilePage() {
                                     </FormItem>
                                 )}
                             />
-                             <FormField
-                                control={form.control}
-                                name="profilePicture"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Profile Picture URL (Optional)</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder="https://example.com/image.png" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <div className="flex gap-4">
+                            <div className="flex gap-4 pt-4">
                                 <Button type="button" variant="outline" onClick={() => router.back()} className="w-full">
                                     Cancel
                                 </Button>

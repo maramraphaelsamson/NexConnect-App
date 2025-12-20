@@ -15,6 +15,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 interface UserProfile {
     name: string;
     email: string;
+    profilePicture?: string;
 }
 
 export default function ProfilePage() {
@@ -55,7 +56,7 @@ export default function ProfilePage() {
             <CardHeader>
                 <div className="flex items-center gap-4">
                     <Avatar className="h-16 w-16 border-2 border-primary">
-                        <AvatarImage src={user.photoURL || `https://api.dicebear.com/8.x/initials/svg?seed=${userProfile?.name || user.email}`} alt={userProfile?.name || 'User'} />
+                        <AvatarImage src={userProfile?.profilePicture} alt={userProfile?.name || 'User'} />
                         <AvatarFallback>{getInitials(userProfile?.name)}</AvatarFallback>
                     </Avatar>
                     <div className="flex-1">
