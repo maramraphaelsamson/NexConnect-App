@@ -1,4 +1,4 @@
-import { Shield, Calculator, Gift, User, Users, Clapperboard, Music, Globe, Settings, Briefcase, Activity, Wallet, Smartphone, Lightbulb, LifeBuoy, History, Megaphone } from "lucide-react";
+import { Shield, Calculator, Gift, User, Users, Clapperboard, Music, Globe, Settings, Briefcase, Activity, Wallet, Smartphone, Lightbulb, LifeBuoy, History, Megaphone, Handshake } from "lucide-react";
 
 export const NAV_LINKS = {
   Personal: [

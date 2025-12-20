@@ -2,7 +2,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
-import { Smartphone, Phone, Zap, History, Lightbulb, LifeBuoy } from "lucide-react";
+import { Smartphone, Phone, Zap, History, Lightbulb, LifeBuoy, Handshake } from "lucide-react";
 import { BuyDataSheet } from "@/components/dashboard/personal/BuyDataSheet";
 import { BuyAirtimeSheet } from "@/components/dashboard/personal/BuyAirtimeSheet";
 import { cn } from "@/lib/utils";
@@ -27,8 +27,8 @@ export function QuickActions() {
       component: <BuyAirtimeSheet><ActionCard icon={Phone} label="Buy Airtime" /></BuyAirtimeSheet>
     },
     {
-      label: "Pay Bills",
-      icon: Lightbulb,
+      label: "Borrow Data",
+      icon: Handshake,
       href: "#",
       disabled: true
     },
@@ -44,12 +44,28 @@ export function QuickActions() {
       <h2 className="text-lg font-bold text-foreground mb-3 px-1 font-headline">Quick Actions</h2>
       <div className="grid grid-cols-4 gap-3">
         {actions.map((action) => {
+           if (action.disabled) {
+             return (
+                <TooltipProvider key={action.label}>
+                    <Tooltip delayDuration={0}>
+                        <TooltipTrigger asChild>
+                            <div>
+                                <ActionCard icon={action.icon} label={action.label} disabled={true} />
+                            </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>Coming Soon</p>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+             )
+           }
           if (action.component) {
             return React.cloneElement(action.component, { key: action.label });
           }
           return (
             <Link href={action.href || "#"} key={action.label} passHref>
-                <ActionCard icon={action.icon} label={action.label} disabled={action.disabled} />
+                <ActionCard icon={action.icon} label={action.label} />
             </Link>
           );
         })}
