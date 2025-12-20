@@ -4,15 +4,31 @@ import { useApp } from "@/context/AppContext";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { LogOut, ChevronRight, HelpCircle, MessageSquare, Phone, ShieldQuestion, FileText, Info } from "lucide-react";
-import { useAuth } from "@/firebase";
+import { LogOut, ChevronRight, HelpCircle, MessageSquare, Phone, ShieldQuestion, FileText, Info, Edit } from "lucide-react";
+import { useAuth, useDoc, useFirestore, useMemoFirebase } from "@/firebase";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { doc } from "firebase/firestore";
+import Link from "next/link";
+import { Skeleton } from "@/components/ui/skeleton";
+
+interface UserProfile {
+    name: string;
+    email: string;
+}
 
 export default function ProfilePage() {
   const { user, isUserLoading } = useApp();
   const auth = useAuth();
   const router = useRouter();
+  const firestore = useFirestore();
+
+    const userRef = useMemoFirebase(() => {
+        if (!firestore || !user) return null;
+        return doc(firestore, 'users', user.uid);
+    }, [firestore, user]);
+
+  const { data: userProfile, isLoading: isProfileLoading } = useDoc<UserProfile>(userRef);
 
     useEffect(() => {
         if (!isUserLoading && !user) {
@@ -39,13 +55,27 @@ export default function ProfilePage() {
             <CardHeader>
                 <div className="flex items-center gap-4">
                     <Avatar className="h-16 w-16 border-2 border-primary">
-                        <AvatarImage src={user.photoURL || `https://api.dicebear.com/8.x/initials/svg?seed=${user.displayName || user.email}`} alt={user.displayName || 'User'} />
-                        <AvatarFallback>{getInitials(user.displayName)}</AvatarFallback>
+                        <AvatarImage src={user.photoURL || `https://api.dicebear.com/8.x/initials/svg?seed=${userProfile?.name || user.email}`} alt={userProfile?.name || 'User'} />
+                        <AvatarFallback>{getInitials(userProfile?.name)}</AvatarFallback>
                     </Avatar>
-                    <div>
-                        <CardTitle className="font-headline text-2xl">{user.displayName || "User"}</CardTitle>
-                        <CardDescription>{user.email}</CardDescription>
+                    <div className="flex-1">
+                        {isProfileLoading ? (
+                            <div className="space-y-2">
+                                <Skeleton className="h-6 w-3/4" />
+                                <Skeleton className="h-4 w-full" />
+                            </div>
+                        ) : (
+                            <>
+                                <CardTitle className="font-headline text-2xl">{userProfile?.name || "User"}</CardTitle>
+                                <CardDescription>{userProfile?.email || user.email}</CardDescription>
+                            </>
+                        )}
                     </div>
+                    <Button asChild variant="outline" size="icon">
+                        <Link href="/profile/edit">
+                           <Edit className="h-4 w-4" />
+                        </Link>
+                    </Button>
                 </div>
             </CardHeader>
         </Card>

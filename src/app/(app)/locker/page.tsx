@@ -18,6 +18,7 @@ interface UserProfile {
     name: string;
     email: string | null;
     personalMode: boolean;
+    businessName?: string;
 }
 
 interface Locker {
@@ -71,7 +72,9 @@ export default function LockerPage() {
                             name: user.displayName || "New User",
                             email: user.email,
                             personalMode: true,
-                            phoneNumber: user.phoneNumber
+                            phoneNumber: user.phoneNumber,
+                            businessName: "",
+                            profilePicture: user.photoURL || ""
                         });
                         
                         // 2. Now that the user profile exists, create the sub-collection documents
