@@ -63,7 +63,7 @@ export default function SignupPage() {
         <CardHeader className="text-center">
            <div className="relative w-24 h-24 mx-auto mb-4">
               <Image
-                src="https://storage.googleapis.com/project-spark-302915.appspot.com/users%2Fstudio-output%2F71597405-c07a-4b03-9d0f-652f4002e219.png"
+                src="https://storage.googleapis.com/project-spark-302915.appspot.com/users%2Fstudio-output/9b9901d8-0056-4c4f-a92c-633054f3b610.png"
                 alt="NexConnect Logo"
                 layout="fill"
                 objectFit="contain"
