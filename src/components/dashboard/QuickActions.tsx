@@ -27,10 +27,18 @@ export function QuickActions() {
       component: <BuyAirtimeSheet><ActionCard icon={Phone} label="Buy Airtime" /></BuyAirtimeSheet>
     },
     {
+      label: "Pay Bills",
+      icon: Zap,
+      href: "#",
+      disabled: true,
+      tooltip: "Coming Soon"
+    },
+    {
       label: "Borrow Data",
       icon: Handshake,
       href: "#",
-      disabled: true
+      disabled: true,
+      tooltip: "Coming Soon"
     },
     {
       label: "History",
@@ -54,7 +62,7 @@ export function QuickActions() {
                             </div>
                         </TooltipTrigger>
                         <TooltipContent>
-                            <p>Coming Soon</p>
+                            <p>{action.tooltip || "Coming Soon"}</p>
                         </TooltipContent>
                     </Tooltip>
                 </TooltipProvider>
