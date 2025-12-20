@@ -1,7 +1,7 @@
 export function NexConnectLogo() {
   return (
     <svg
-      viewBox="0 0 100 100"
+      viewBox="-10 -10 250 60"
       xmlns="http://www.w3.org/2000/svg"
       className="w-full h-full"
     >
@@ -12,48 +12,30 @@ export function NexConnectLogo() {
         </linearGradient>
         <style>
           {`
-          @keyframes draw {
-            to {
-              stroke-dashoffset: 0;
+            .nexconnect-text {
+              font-family: 'Playfair Display', serif;
+              font-size: 40px;
+              font-weight: 700;
+              fill: none;
+              stroke: url(#logo-gradient);
+              stroke-width: 1.5;
+              stroke-dasharray: 800;
+              stroke-dashoffset: 800;
+              animation: draw-text 3s ease-in-out forwards;
             }
-          }
-          .animate-draw {
-            stroke-dasharray: 500;
-            stroke-dashoffset: 500;
-            animation: draw 2s ease-in-out forwards;
-          }
-          .fade-in {
-            opacity: 0;
-            animation: fadeIn 1s ease-in forwards 1s;
-          }
-          @keyframes fadeIn {
-            to {
-              opacity: 1;
+
+            @keyframes draw-text {
+              to {
+                stroke-dashoffset: 0;
+              }
             }
-          }
-        `}
+          `}
         </style>
       </defs>
 
-      <path
-        d="M20,80 L50,20 L80,80"
-        stroke="url(#logo-gradient)"
-        strokeWidth="10"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
-        className="animate-draw"
-      />
-
-      <path
-        d="M35,60 L65,60"
-        stroke="hsl(var(--foreground))"
-        strokeWidth="8"
-        strokeLinecap="round"
-        className="fade-in"
-      />
-      
-      <circle cx="50" cy="20" r="7" fill="hsl(var(--accent))" className="fade-in" />
+      <text x="0" y="40" className="nexconnect-text">
+        NexConnect
+      </text>
     </svg>
   );
 }
