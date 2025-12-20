@@ -16,19 +16,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { FEATURE_SLIDES } from "@/lib/constants";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import Autoplay from "embla-carousel-autoplay";
+import { NexConnectLogo } from "@/components/NexConnectLogo";
 
 export default function WelcomePage() {
   return (
     <div className="relative flex flex-col min-h-screen bg-gradient-to-br from-primary via-cyan-500 to-emerald-500 text-white overflow-hidden">
       <main className="flex-1 flex flex-col items-center justify-center text-center p-4 md:p-8 z-10">
-        <div className="relative w-40 h-40 mb-6 animate-fade-in-down">
-          <Image
-            src="https://storage.googleapis.com/project-spark-302915.appspot.com/users%2Fstudio-output%2F9b9901d8-0056-4c4f-a92c-633054f3b610.png"
-            alt="NexConnect Logo"
-            layout="fill"
-            objectFit="contain"
-            priority
-          />
+        <div className="relative w-48 h-48 mb-6 animate-fade-in-down">
+          <NexConnectLogo />
         </div>
 
         <h1 className="text-4xl md:text-5xl font-headline font-bold mb-4 animate-fade-in-up">

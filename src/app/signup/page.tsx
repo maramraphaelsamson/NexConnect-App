@@ -12,6 +12,8 @@ import { useAuth, useUser } from "@/firebase";
 import { initiateEmailSignIn, initiateEmailSignUp, initiateGoogleSignIn } from "@/firebase/non-blocking-login";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import { NexConnectLogo } from "@/components/NexConnectLogo";
+
 
 const GoogleIcon = () => (
     <svg className="mr-2 h-4 w-4" viewBox="0 0 48 48">
@@ -61,13 +63,8 @@ export default function SignupPage() {
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-background to-blue-50">
       <Card className="w-full max-w-sm mx-4">
         <CardHeader className="text-center">
-           <div className="relative w-24 h-24 mx-auto mb-4">
-              <Image
-                src="https://storage.googleapis.com/project-spark-302915.appspot.com/users%2Fstudio-output/9b9901d8-0056-4c4f-a92c-633054f3b610.png"
-                alt="NexConnect Logo"
-                layout="fill"
-                objectFit="contain"
-              />
+           <div className="relative w-28 h-28 mx-auto mb-4">
+              <NexConnectLogo />
             </div>
           <CardTitle className="font-headline text-2xl">{isLogin ? 'Welcome Back' : 'Create an Account'}</CardTitle>
           <CardDescription>{isLogin ? 'Log in to continue to NexConnect.' : 'Join NexConnect to get started.'}</CardDescription>
