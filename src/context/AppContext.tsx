@@ -5,11 +5,15 @@ import { useUser } from '@/firebase';
 import type { User } from 'firebase/auth';
 
 type Mode = 'Personal' | 'Business';
+type Theme = 'light' | 'dark';
 
 interface AppContextType {
   mode: Mode;
   toggleMode: () => void;
   setMode: (mode: Mode) => void;
+  theme: Theme;
+  toggleTheme: () => void;
+  setTheme: (theme: Theme) => void;
   user: User | null;
   isUserLoading: boolean;
 }
@@ -18,22 +22,26 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [mode, setMode] = useState<Mode>('Personal');
+  const [theme, setTheme] = useState<Theme>('light');
   const { user, isUserLoading } = useUser();
 
   useEffect(() => {
-    if (mode === 'Business') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [mode]);
+    // Apply the theme to the document
+    const root = window.document.documentElement;
+    root.classList.remove('light', 'dark');
+    root.classList.add(theme);
+  }, [theme]);
 
   const toggleMode = () => {
     setMode((prevMode) => (prevMode === 'Personal' ? 'Business' : 'Personal'));
   };
 
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+  }
+
   return (
-    <AppContext.Provider value={{ mode, toggleMode, setMode, user, isUserLoading }}>
+    <AppContext.Provider value={{ mode, toggleMode, setMode, theme, toggleTheme, setTheme, user, isUserLoading }}>
       {children}
     </AppContext.Provider>
   );

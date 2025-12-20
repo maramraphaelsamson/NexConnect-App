@@ -26,7 +26,7 @@ export function BusinessDashboard() {
             <div>
                 <h1 className="text-2xl font-headline font-bold text-foreground">Profit Monitor</h1>
             </div>
-            <Badge variant="outline" className="border-green-400 text-green-400 flex items-center gap-2">
+            <Badge variant="outline" className="border-green-400 text-green-400 flex items-center gap-2 bg-green-900/20">
                 <Briefcase className="w-4 h-4" /> RESELLER ACTIVE
             </Badge>
         </header>

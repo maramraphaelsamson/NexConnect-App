@@ -4,13 +4,15 @@ import { useApp } from "@/context/AppContext";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { LogOut, ChevronRight, HelpCircle, MessageSquare, Phone, ShieldQuestion, FileText, Info, Edit } from "lucide-react";
+import { LogOut, ChevronRight, HelpCircle, MessageSquare, Phone, ShieldQuestion, FileText, Info, Edit, Moon, Sun } from "lucide-react";
 import { useAuth, useDoc, useFirestore, useMemoFirebase } from "@/firebase";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { doc } from "firebase/firestore";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 interface UserProfile {
     name: string;
@@ -19,7 +21,7 @@ interface UserProfile {
 }
 
 export default function ProfilePage() {
-  const { user, isUserLoading } = useApp();
+  const { user, isUserLoading, theme, toggleTheme } = useApp();
   const auth = useAuth();
   const router = useRouter();
   const firestore = useFirestore();
@@ -79,6 +81,25 @@ export default function ProfilePage() {
                     </Button>
                 </div>
             </CardHeader>
+        </Card>
+
+        <Card>
+            <CardHeader>
+                <CardTitle className="font-headline text-lg">Appearance</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <div className="flex items-center justify-between">
+                    <Label htmlFor="dark-mode-switch" className="flex items-center gap-3">
+                        {theme === 'dark' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+                        <span className="text-base">Dark Mode</span>
+                    </Label>
+                    <Switch
+                        id="dark-mode-switch"
+                        checked={theme === 'dark'}
+                        onCheckedChange={toggleTheme}
+                    />
+                </div>
+            </CardContent>
         </Card>
         
         <Card>
