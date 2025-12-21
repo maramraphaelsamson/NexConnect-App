@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "../ui/skeleton";
+import { FundWalletSheet } from "./personal/FundWalletSheet";
 
 interface WalletCardProps {
     balance: number | null;
@@ -21,9 +22,11 @@ export function WalletCard({ balance, isLoading }: WalletCardProps) {
              )}
           </CardTitle>
         </div>
-        <Button variant="accent" className="bg-accent text-accent-foreground font-semibold">
-          Fund Wallet
-        </Button>
+        <FundWalletSheet>
+            <Button variant="accent" className="bg-accent text-accent-foreground font-semibold">
+              Fund Wallet
+            </Button>
+        </FundWalletSheet>
       </CardHeader>
     </Card>
   );
