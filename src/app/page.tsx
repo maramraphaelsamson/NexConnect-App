@@ -48,7 +48,7 @@ export default function WelcomePage() {
           }}
         >
           <CarouselContent className="-ml-2">
-            {FEATURE_SLIDES.map((slide) => {
+            {FEATURE_SLIDES.map((slide, index) => {
               const image = PlaceHolderImages.find(img => img.id === slide.imageId);
               return (
                 <CarouselItem key={slide.id} className="pl-4 basis-full">
@@ -60,6 +60,8 @@ export default function WelcomePage() {
                           alt={slide.title}
                           data-ai-hint={image.imageHint}
                           fill
+                          priority={index === 0}
+                          sizes="(max-width: 768px) 100vw, 50vw"
                           className="object-cover opacity-20"
                         />
                       )}
